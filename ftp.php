@@ -57,4 +57,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["file"])) {
         <button type="submit">Upload</button>
     </form>
 </body>
+    hi
 </html>
