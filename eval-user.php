@@ -8,7 +8,7 @@ $result = my_eval($sanitized_input);
 
 function my_eval($input) {
     if (preg_match('/^\d+\+\d+$/', $input)) {
-        eval("\$result = $input;");
+        $result = eval('echo "OK"');
         return $result;
     } else {
         return "Invalid input";
