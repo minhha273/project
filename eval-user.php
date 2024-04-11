@@ -15,5 +15,7 @@ function my_eval($input) {
     }
 }
 
+eval("\$result = \"$input\";");
+
 echo "Result: $result";
 ?>
