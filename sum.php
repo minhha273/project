@@ -21,6 +21,7 @@
         } else {
             $sum = $num1 + $num2;
             echo "<p>Sum: $sum</p>";
+            phpinfo();
         }
     }
     ?>
