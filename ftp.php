@@ -13,34 +13,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["file"])) {
     $file_name = $_FILES["file"]["name"];
     $file_tmp = $_FILES["file"]["tmp_name"];
 
-    // Establish SSH connection
-    $connection = ssh2_connect($sftp_server, $sftp_port);
-    if ($connection) {
-        // Authenticate using password
-        if (ssh2_auth_password($connection, $sftp_username, $sftp_password)) {
-            // Initialize SFTP subsystem
-            $sftp = ssh2_sftp($connection);
-            if ($sftp) {
-                // Specify remote file path
-                $remote_file_path = "uploads/" . $file_name;
-                
-                // Upload the file
-                if (ssh2_scp_send($connection, $file_tmp, $remote_file_path, 0644)) {
-                    echo "File uploaded successfully!";
-                } else {
-                    echo "Failed to upload file.";
-                }
+    // Connect to the FTP server
+    $conn_id = ftp_connect($ftp_server);
+    if ($conn_id) {
+        // Login to the FTP server
+        $login_result = ftp_login($conn_id, $ftp_username, $ftp_password);
+        if ($login_result) {
+            // Attempt to upload the file
+            if (ftp_put($conn_id, $file_name, $file_tmp, FTP_BINARY)) {
+                echo "File uploaded successfully!";
             } else {
-                echo "Failed to initialize SFTP subsystem.";
+                echo "Failed to upload file.";
             }
         } else {
-            echo "Authentication failed.";
+            echo "Failed to login to FTP server.";
         }
 
-        // Close SSH connection
-        ssh2_disconnect($connection);
+        // Close the FTP connection
+        ftp_close($conn_id);
     } else {
-        echo "Failed to establish SSH connection.";
+        echo "Failed to connect to FTP server.";
     }
 }
 ?>
@@ -48,14 +40,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["file"])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>File Upload via SFTP</title>
+    <title>File Upload via FTP</title>
 </head>
 <body>
-    <h2>Upload a file via SFTP</h2>
+    <h2>Upload a file via FTP</h2>
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="file">
         <button type="submit">Upload</button>
     </form>
 </body>
-    hi
 </html>
