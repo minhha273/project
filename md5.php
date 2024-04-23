@@ -6,7 +6,7 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 // Hash the password using bcrypt
-$hashed_password = password_hash($password, PASSWORD_BCRYPT);
+$hashed_password = md5($password);
 
 // Save the username and hashed password to a file (for demonstration purposes)
 $file = 'passwords.txt';
